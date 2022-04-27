@@ -7,10 +7,25 @@ from .forms import NewsForm
 from .models import News
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 # Create your views here.
 def home(request):
-    return render(request, 'news/home.html')
+        allnews = News.objects.order_by('-created').filter(datearchived__isnull=True)
+        page_num = request.GET.get('page', 1)
+        paginator = Paginator(allnews, 9)  # 6 employees per page
+
+        try:
+            page_obj = paginator.page(page_num)
+        except PageNotAnInteger:
+            # if page is not an integer, deliver the first page
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            # if the page is out of range, deliver the last page
+            page_obj = paginator.page(paginator.num_pages)
+
+        return render(request, 'news/home.html', {'allnews': allnews, 'page_obj': page_obj})
 
 
 def signupuser(request):
@@ -51,7 +66,7 @@ def createnews(request):
         return render(request, 'news/createnews.html', {'form': NewsForm()})
     else:
         try:
-            form = NewsForm(request.POST)
+            form = NewsForm(request.POST, request.FILES)
             newnews = form.save(commit=False)
             newnews.newscreator = request.user
             newnews.save()
@@ -66,15 +81,15 @@ def currentnews(request):
 
 @login_required
 def viewnews(request, news_id):
-    viewnews = get_object_or_404(News, pk=news_id, newscreator=request.user)
+    viewnewss = get_object_or_404(News, pk=news_id, newscreator=request.user)
     if request.method == 'GET':
-        form = NewsForm(instance=viewnews)
-        return render(request, 'news/viewnews.html', {'viewnews': viewnews, 'form': form})
+        form = NewsForm(instance=viewnewss)
+        return render(request, 'news/viewnews.html', {'viewnews': viewnewss, 'form': form})
     else:
         try:
-            form = NewsForm(request.POST, instance=viewnews)
+            form = NewsForm(request.POST, request.FILES, instance=viewnewss)
             form.save()
-            return redirect('currentnews')
+            return redirect('home')
         except ValueError:
             return render(request, 'news/createnews.html', {'form': NewsForm(), 'error': 'Передано неправильні дані. Повторіть спробу'})
 
@@ -83,6 +98,13 @@ def archivenews(request, news_id):
     if request.method == 'POST':
         archivenews.datearchived = timezone.now()
         archivenews.save()
+        return redirect('currentnews')
+
+def dearchivenews(request, news_id):
+    dearchivenews = get_object_or_404(News, pk=news_id, newscreator=request.user)
+    if request.method == 'POST':
+        dearchivenews.datearchived = None
+        dearchivenews.save()
         return redirect('currentnews')
 
 def deletenews(request, news_id):
@@ -101,3 +123,7 @@ def deletenews_archives(request, news_id):
 def archivednews(request):
     archivednews = News.objects.filter(newscreator=request.user, datearchived__isnull=False).order_by('-datearchived')
     return render(request, 'news/archivednews.html', {'news': archivednews})
+
+def detail(request, news_id):
+    detailnews = get_object_or_404(News, pk=news_id)
+    return render(request, 'news/detail.html', {'detailnews': detailnews})

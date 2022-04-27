@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls.static import static
+from django.conf import settings
 from news import views
 
 urlpatterns = [
@@ -34,8 +36,12 @@ urlpatterns = [
     path('current/', views.currentnews, name='currentnews'),
     path('archives/', views.archivednews, name='archivednews'),
     path('news/<int:news_id>', views.viewnews, name='viewnews'),
-    path('news/<int:news_id>/archive', views.archivenews, name='archivenews'),
+    path('news/<int:news_id>/detail', views.detail, name='detail'),
     path('news/<int:news_id>/delete', views.deletenews, name='deletenews'),
+    path('news/<int:news_id>/archive', views.archivenews, name='archivenews'),
+    path('news/<int:news_id>/dearchive', views.dearchivenews, name='dearchivenews'),
     path('news/<int:news_id>/archives/delete', views.deletenews_archives, name='deletenews_archives'),
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

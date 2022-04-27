@@ -9,3 +9,45 @@
     line-height: 1.5;
     border-radius: 0.25rem;
 }
+
+.navbar-nav .nav-link {
+    color: rgba(0,0,0,1) !important;
+}
+
+.navbar-nav .nav-link:hover {
+    color: rgba(0,0,0,.5) !important;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+#newstitle {
+    font-size: 6rem;
+}
+
+@media (min-width: 992px) {
+    #hometext {
+        font-size: 4rem;
+    }
+    #blogdetailtitle {
+        font-size: 5rem;
+    }
+}
+
+.row_123 {
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+}
+
+
+.text123 {
+    text-indent: 20px;
+    margin-top: 20px;
+    font-size: large;
+    text-decoration: solid;
+    color: #535353;
+}
