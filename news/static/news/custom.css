@@ -22,10 +22,11 @@ body {
     font-family: 'Lato', sans-serif;
 }
 
+@media (max-width: 500px) {
 #newstitle {
-    font-size: 4rem;
+    font-size: 3rem;
     word-break: break-word;
-}
+}}
 
 @media (min-width: 992px) {
     #hometext {
