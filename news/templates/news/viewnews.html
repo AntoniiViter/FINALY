@@ -19,14 +19,28 @@
             {% endif %}
             <form method="POST" accept-charset="utf-8" enctype="multipart/form-data">
                 {% csrf_token %}
+            {% if viewnews.datearchived is None %}
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" name="title" class="form-control" id="title" value="{{ viewnews.title }}" required>
                 </div>
+            {% else %}
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <div style="display: revert !important; height: auto !important; overflow:auto; word-break: break-word;" name="title" rows="5" class="form-control" id="title" >{{ viewnews.title }}</div>
+                </div>
+            {% endif %}
+            {% if viewnews.datearchived is None %}
                 <div class="form-group">
                     <label for="info">info</label>
                     <textarea name="info" rows="5" class="form-control" id="info" >{{ viewnews.info }}</textarea>
                 </div>
+            {% else %}
+                <div class="form-group">
+                    <label for="info">info</label>
+                    <div style="display: revert !important; height: auto !important; overflow:auto; word-break: break-word; max-height: 134px" name="info" rows="5" class="form-control" id="info" >{{ viewnews.info }}</div>
+                </div>
+            {% endif %}
                 <div>
                     <label for="image">Current Image:</label>
                     <img src="{{ viewnews.image.url }}" class="img-fluid mb-2">
