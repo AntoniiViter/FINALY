@@ -10,7 +10,7 @@
         <div class="col-md-10">
             <div class="list-group">
                 {% for news in news %}
-                    <a href="{% url 'viewnews' news.id %}" class="list-group-item list-group-item-action"> <b>{{ news.title }}</b> - Archived {{ news.datearchived|date:'M j Y H:i' }}</a>
+                    <a style="word-break: break-word" href="{% url 'viewnews' news.id %}" class="list-group-item list-group-item-action"> <b>{{ news.title }}</b> - Archived {{ news.datearchived|date:'M j Y H:i' }}</a>
                 {% endfor %}
             </div>
         </div>

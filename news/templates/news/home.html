@@ -47,8 +47,8 @@
 
     <img style="width: 400px; height: 250px; object-fit: cover;" src="{{ allnews.image.url }}" class="img-fluid mb-2">
     {% endif %}
-    <h3>{{ allnews.title }}  <label style="color:#979797; font-size: small;" > {{ allnews.newscreator }}</label> </h3>
-    <p>{{ allnews.info|striptags|truncatechars:50 }}</p>
+    <h3 style="word-break: break-word">{{ allnews.title }}  <label style="color:#979797; font-size: small;" > {{ allnews.newscreator }}</label> </h3>
+    <p style="word-break: break-word">{{ allnews.info|striptags|truncatechars:50 }}</p>
     <a href="{% url 'detail' allnews.id %}"><button type="button" class="btn btn-info">See more</button></a>
   </div>
       <br>
