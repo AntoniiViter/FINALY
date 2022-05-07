@@ -28,34 +28,37 @@
                     <textarea name="info" rows="5" class="form-control" id="info" >{{ viewnews.info }}</textarea>
                 </div>
                 <div>
-                    {% if viewnews.image %}
                     <label for="image">Current Image:</label>
                     <img src="{{ viewnews.image.url }}" class="img-fluid mb-2">
-                        <br>
-                        <br>
+                </div>
+                <br>
+                {% if viewnews.datearchived is None %}
+                <div>
                     <label for="url">Change Image:</label>
                     <input type="file" name="image" id="image">
                 </div>
-                <div>
-                    {% else %}
-                    <label for="url">Add Image</label>
-                    <input type="file" name="image" id="image">
-                </div>
-                    {% endif %}
                 <br>
+                {% endif %}
                 {% if viewnews.url %}
                 <div>
-                    <label for="url">Current Url</label>
+                    <label for="url">Current Url:</label>
                     <a href="{{ viewnews.url }}">{{ viewnews.url }}</a>
-
-                    <label for="url">Change Url</label>
+                </div>
+                <br>
+                {% endif %}
+                {% if viewnews.url and viewnews.datearchived is None %}
+                <div>
+                    <label for="url">Change Url:</label>
                     {{ form.url }}
                 </div>
-                {% else %}
+                <br>
+                {% endif %}
+                {% if not viewnews.url and viewnews.datearchived is None %}
                 <div>
-                    <label for="url">Add Url</label>
+                    <label for="url">Add Url:</label>
                 {{ form.url }}
                 </div>
+                <br>
                 {% endif %}
                 <br>
                  {% if viewnews.datearchived is None %}

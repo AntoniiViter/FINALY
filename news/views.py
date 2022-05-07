@@ -76,7 +76,7 @@ def createnews(request):
 
 @login_required
 def currentnews(request):
-    news = News.objects.filter(newscreator=request.user, datearchived__isnull=True)
+    news = News.objects.order_by('-created').filter(newscreator=request.user, datearchived__isnull=True)
     return render(request, 'news/currentnews.html', {'news': news})
 
 @login_required
