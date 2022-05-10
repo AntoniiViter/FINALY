@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
-from .forms import NewsForm
-from .models import News
+from .forms import NewsForm, CommentForm
+from .models import News, Comments
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -126,4 +126,15 @@ def archivednews(request):
 
 def detail(request, news_id):
     detailnews = get_object_or_404(News, pk=news_id)
-    return render(request, 'news/detail.html', {'detailnews': detailnews})
+    comments = Comments.objects.filter(commentcreator_id=news_id)
+    if request.method == 'GET':
+        return render(request, 'news/detail.html', {'detailnews': detailnews, 'form': CommentForm(), 'comments': comments})
+    else:
+        try:
+            form = CommentForm(request.POST)
+            newcomment = form.save(commit=False)
+            newcomment.commentcreator = detailnews
+            newcomment.save()
+            return redirect('detail', news_id)
+        except ValueError:
+            return render(request, 'news/detail.html', {'form': CommentForm(), 'error': 'Передано неправильні дані. Повторіть спробу'})

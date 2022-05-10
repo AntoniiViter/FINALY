@@ -15,3 +15,13 @@ class News(models.Model):
 
     def __str__(self):
         return "%s (%s) [%s]" % (self.title, self.pk, self.newscreator)
+
+
+class Comments(models.Model):
+    commentcreator = models.ForeignKey(News, related_name='comments', on_delete=models.CASCADE, db_constraint=False)
+    info = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return "%s [%s] (%s)" % (self.commentcreator.title, self.info, self.pk)
