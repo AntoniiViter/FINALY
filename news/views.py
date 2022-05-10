@@ -126,7 +126,7 @@ def archivednews(request):
 
 def detail(request, news_id):
     detailnews = get_object_or_404(News, pk=news_id)
-    comments = Comments.objects.filter(commentcreator_id=news_id)
+    comments = Comments.objects.order_by('-created').filter(commentcreator_id=news_id)
     if request.method == 'GET':
         return render(request, 'news/detail.html', {'detailnews': detailnews, 'form': CommentForm(), 'comments': comments})
     else:
