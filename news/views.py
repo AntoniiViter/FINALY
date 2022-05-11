@@ -127,8 +127,9 @@ def archivednews(request):
 def detail(request, news_id):
     detailnews = get_object_or_404(News, pk=news_id)
     comments = Comments.objects.order_by('-created').filter(commentcreator_id=news_id)
+
     if request.method == 'GET':
-        return render(request, 'news/detail.html', {'detailnews': detailnews, 'form': CommentForm(), 'comments': comments})
+        return render(request, 'news/detail.html', {'comments': comments, 'detailnews': detailnews, 'form': CommentForm()})
     else:
         try:
             form = CommentForm(request.POST)
@@ -137,4 +138,4 @@ def detail(request, news_id):
             newcomment.save()
             return redirect('detail', news_id)
         except ValueError:
-            return render(request, 'news/detail.html', {'form': CommentForm(), 'error': 'Передано неправильні дані. Повторіть спробу'})
+            return render(request, 'news/detail.html', {'detailnews': detailnews, 'form': CommentForm(), 'comments': comments, 'page_obj': page_obj, 'error': 'Передано неправильні дані. Повторіть спробу'})
