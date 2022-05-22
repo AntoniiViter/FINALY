@@ -13,15 +13,25 @@ class News(models.Model):
     url = models.URLField(blank=True)
     newscreator = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name_plural = 'Новости'
+        verbose_name = 'Новость'
+        ordering = ['-created']
+
+
     def __str__(self):
-        return "%s (%s) [%s]" % (self.title, self.pk, self.newscreator)
+        return "%s (%s)" % (self.title, self.newscreator)
 
 
 class Comments(models.Model):
-    commentcreator = models.ForeignKey(News, related_name='comments', on_delete=models.CASCADE, db_constraint=False)
-    info = models.TextField()
+    commentlocation = models.ForeignKey(News, related_name='comments', on_delete=models.CASCADE, db_constraint=False)
+    info = models.TextField(verbose_name='текст комментария')
     created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name_plural = 'Комментарии'
+        verbose_name = 'Комментарий'
+        ordering = ['-created']
 
-    def __str__(self):
-        return "%s [%s] (%s)" % (self.commentcreator.title, self.info, self.pk)
+    #def __str__(self):
+        #return "%s (%s) - %s" % (self.info, self.commentlocation.newscreator, self.commentlocation.title)
