@@ -7,7 +7,7 @@
 
 {% for i in page_obj.paginator.page_range %}
   {% if page_obj.number == i %}
-    <a href="#">{{ i }} </a>
+    <b style="color: #007bff">{{ i }}</b>
   {% else %}
     <a href="?page={{ i }}">{{ i }}</a>
   {% endif %}

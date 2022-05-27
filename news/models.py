@@ -20,11 +20,12 @@ class News(models.Model):
 
 
     def __str__(self):
-        return "%s (%s)" % (self.title, self.newscreator)
+        return self.title
 
 
 class Comments(models.Model):
     commentlocation = models.ForeignKey(News, related_name='comments', on_delete=models.CASCADE, db_constraint=False)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     info = models.TextField(verbose_name='текст комментария')
     created = models.DateTimeField(auto_now_add=True)
 

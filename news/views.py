@@ -127,15 +127,28 @@ def archivednews(request):
 def detail(request, news_id):
     detailnews = get_object_or_404(News, pk=news_id)
     comments = Comments.objects.filter(commentlocation_id=news_id)
+    page_num = request.GET.get('page', 1)
+    paginator = Paginator(comments, 5)  # 6 employees per page
+
+    try:
+        page_obj = paginator.page(page_num)
+    except PageNotAnInteger:
+        # if page is not an integer, deliver the first page
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        # if the page is out of range, deliver the last page
+        page_obj = paginator.page(paginator.num_pages)
+
 
     if request.method == 'GET':
-        return render(request, 'news/detail.html', {'comments': comments, 'detailnews': detailnews, 'form': CommentForm()})
+        return render(request, 'news/detail.html', {'comments': comments, 'detailnews': detailnews, 'form': CommentForm(), 'page_obj': page_obj})
     else:
         try:
             form = CommentForm(request.POST)
             newcomment = form.save(commit=False)
             newcomment.commentlocation = detailnews
+            newcomment.author = request.user
             newcomment.save()
             return redirect('detail', news_id)
         except ValueError:
-            return render(request, 'news/detail.html', {'detailnews': detailnews, 'form': CommentForm(), 'comments': comments, 'error': 'Передано неправильні дані. Повторіть спробу'})
+            return render(request, 'news/detail.html', {'detailnews': detailnews, 'form': CommentForm(), 'comments': comments, 'page_obj': page_obj, 'error': 'Передано неправильні дані. Повторіть спробу'})

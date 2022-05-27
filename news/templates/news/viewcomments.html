@@ -4,7 +4,6 @@
 <head>
   <style media="screen">
     .be-comment-block {
-        margin-bottom: 50px !important;
         border: 1px solid #edeff2;
         border-radius: 2px;
         padding: 50px 0px;
@@ -15,7 +14,6 @@
         font-size: 25px;
         color: #262626;
         margin-bottom: 15px;
-        font-family: 'Conv_helveticaneuecyr-bold';
     }
 
     .be-img-comment {
@@ -120,12 +118,12 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
 <div class="be-comment-block">
-	<h1 class="comments-title">Comments({{ comments.count }})</h1>
+	<h1 class="comments-title">Comments ({{ comments.count }})</h1>
 	<div class="be-comment">
 		<div class="be-comment-content">
-		{% for comment in comments %}
+		{% for comment in page_obj %}
 				<span class="be-comment-name">
-					<strong>{{ comment.commentlocation.newscreator }}</strong>
+					<strong>{{ comment.author }}</strong>
 					</span>
 				<span class="be-comment-time">
 					<i class="fa fa-clock-o"></i>
@@ -139,3 +137,5 @@
 		</div>
 	</div>
 {% endif %}
+
+    {% include "news/pagination.html" %}

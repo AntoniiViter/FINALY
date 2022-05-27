@@ -12,9 +12,9 @@ class NewsAdmin(admin.ModelAdmin):
 
 class CommentsAdmin(admin.ModelAdmin):
     readonly_fields = ('created',)
-    list_display = ('commentlocation', 'info', 'created')
+    list_display = ('commentlocation', 'author', 'info', 'created')
     list_display_links = ('commentlocation',)
-    search_fields = ('commentlocation', 'info')
+    search_fields = ('commentlocation', 'author', 'info')
 
 
 admin.site.register(News, NewsAdmin)
